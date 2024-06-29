@@ -37,6 +37,8 @@ var accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
 });
 app.use(morgan("combined", { stream: accessLogStream }));
 
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
@@ -47,6 +49,7 @@ app.post("/api/register", userCtlr.register);
 
 app.post("/api/createtask", taskController.create);
 app.put("/api/updatetask", taskController.update);
+
 
 app.listen(process.env.port, () => {
   console.log("listening on port:", process.env.port);
