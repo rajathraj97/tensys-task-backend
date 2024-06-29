@@ -1,12 +1,9 @@
 const User = require('../models/userModel')
-const pick = require('../../node_modules/lodash/pick')
-const bcrypt = require('../../node_modules/bcryptjs')
-const jwt = require('../../node_modules/jsonwebtoken')
+const pick = require('../node_modules/lodash/pick')
+const bcrypt = require('../node_modules/bcrypt')
+const jwt = require('../node_modules/jsonwebtoken')
 require('dotenv').config()
-const accountSid = process.env.ACCOUNT_ID;
-const authToken = process.env.AUTH_TOKEN;
-const otpGenerator = require('otp-generator')
-const client = require('twilio')(accountSid, authToken);
+
 
 const userCtlr = {}
 
