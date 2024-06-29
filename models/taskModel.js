@@ -15,10 +15,19 @@ const taskSchema = new Schema({
     type: String,
     required: true
   },
+  priority:{
+    type:String,
+    required:true,
+    enum:['high','medium','low']
+  },
   status: {
     type: String,
     enum: ['pending', 'in progress', 'completed'],
     default: 'pending'
+  },
+  assigned_user:{
+    type:String,
+    required:true
   }
 });
 
