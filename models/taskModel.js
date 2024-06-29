@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Define the Task Schema
-const taskSchema = new Schema({
+const tasksSchema = new Schema({
+ createdBy:{
+    type:String,
+    default:"admin"
+ },
   taskName: {
     type: String,
     required: true
@@ -18,7 +21,8 @@ const taskSchema = new Schema({
   priority:{
     type:String,
     required:true,
-    enum:['high','medium','low']
+    enum:['high','medium','low'],
+    default:"low"
   },
   status: {
     type: String,
@@ -27,21 +31,16 @@ const taskSchema = new Schema({
   },
   assigned_user:{
     type:String,
-    required:true
+    required:true,
+    default:"unassigned"
+  },
+  completedAt:{
+    type:Date,
+    default:null
   }
 });
 
-// Define the User Schema
-const tasksSchema = new Schema({
-  userId: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  tasks: [taskSchema]
-});
-
 // Create the User Model
-const Task = mongoose.model('User', tasksSchema);
+const Task = mongoose.model('Tasks', tasksSchema);
 
 module.exports = Task
