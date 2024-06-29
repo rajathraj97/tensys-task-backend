@@ -1,4 +1,4 @@
-const mongoose = require('../../node_modules/mongoose')
+const mongoose = require('../node_modules/mongoose')
 
 const {Schema} = mongoose
 
