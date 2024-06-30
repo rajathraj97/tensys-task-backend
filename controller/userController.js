@@ -29,23 +29,21 @@ userCtlr.login = async(req,res) =>{
     const body = pick(req.body,["email","password"])
     const user =await User.findOne({email:body.email})
     if(user){
-      const password = await bcrypt.compare(body.password,user.password)
-      if(password){
-       const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false,lowerCaseAlphabets:false })
-       const addOtp = await User.findByIdAndUpdate(user._id,{otp:otp},{new:true})
-       res.json(pick(user,['_id','email']))
-       client.messages.create({
-           body: `OTP for Logging In is ${otp}`,
-           from:process.env.TWILIO_NUMBER,
-           to: `${"+"}${user.number}`
-       })
-       .then(message => console.log(message.sid))
-       .done()
-      
-      }else{
-        res.json({error:"Invalid Password"})
-      }
-      
+        const password = bcrypt.compare(body.password,user.password)
+        if(password){
+            const tokenData = {
+                username:user.username,
+                _id:user._id,
+                role:user.role,
+                email:user.email,
+                number:user.number
+                
+            }
+            const token = jwt.sign(tokenData,"abc123")
+            res.status(200).json(`Bearer ${token}`)
+        }else{
+        res.status(404).json({msg:"Invalid Password/Email"})
+        }
     }else{
         res.json({error:"Invalid User"})
     }

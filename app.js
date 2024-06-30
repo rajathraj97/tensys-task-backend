@@ -5,7 +5,7 @@ const http = require("http");
 const configuredb = require("./Database/db");
 var morgan = require("morgan");
 var path = require("path");
-const redis = require("redis");
+// const redis = require("redis");
 const { promisify } = require("util");
 const userCtlr = require("./controller/userController");
 const socketIo = require("socket.io");
@@ -14,10 +14,10 @@ const { handleMessage } = require("./message/message");
 const { createMessage, updateMessage, deleteMessage } = require("./middleware/message");
 
 const app = express();
-const client = redis.createClient();
+// const client = redis.createClient();
 
-const getAsync = promisify(client.get).bind(client);
-const setAsync = promisify(client.set).bind(client);
+// const getAsync = promisify(client.get).bind(client);
+// const setAsync = promisify(client.set).bind(client);
 
 const server = app.listen(process.env.port, (req,res) => console.log(`Listening on port ${process.env.port}`))
 const io = socketIo(server,{ cors: {
@@ -49,6 +49,7 @@ app.use(cors());
 configuredb();
 
 app.post("/api/register", userCtlr.register);
+app.post("/api/login",userCtlr.login)
 app.post("/api/createtask",createMessage(clients), taskController.create);
 app.put("/api/updatetask", updateMessage(clients),taskController.update);
 app.delete("/api/deletetask",deleteMessage(clients),taskController.delete)
