@@ -3,12 +3,17 @@ const Task = require("../models/taskModel");
 const pick = require("../node_modules/lodash/pick");
 var ObjectId = require("mongodb").ObjectId;
 const socketIo = require('socket.io');
+const { validationResult } = require("express-validator");
 const taskController = {};
 
 
 
 taskController.create = async (req, res) => {
   try {
+    const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+          }
     const message = 'New Task Created';
     const body = pick(req.body, ["userId", "taskName","details","priority","status"]);
     const data = new Task(body)
@@ -31,6 +36,10 @@ taskController.update = async (req, res) => {
 
 taskController.delete = async (req, res) => {
   try {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     const body = pick(req.body,["_id"])
     const data = await Task.deleteOne({_id:body._id})
     res.status(200).json({msg:"deleted sucessfully"})
