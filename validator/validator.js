@@ -3,7 +3,7 @@ const { body } = require('express-validator');
 exports.validateUserRegistration = [
   body('username').notEmpty().withMessage('Username must be at least 5 characters long'),
   body('email').isEmail().withMessage('Email is invalid'),
-  body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
+  body('password').isLength({ min: 4 }).withMessage('Password must be at least 8 characters long'),
 ];
 
 exports.validateTaskCreation = [

@@ -30,9 +30,13 @@ const tasksSchema = new Schema({
     default: 'pending'
   },
   assigned_user:{
-    type:String,
+    type:Schema.Types.ObjectId,
     required:true,
-    default:"unassigned"
+    default:null
+  },
+  assigned_username:{
+    type:String,
+    default:null
   },
   completedAt:{
     type:Date,
