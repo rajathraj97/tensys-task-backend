@@ -5,20 +5,20 @@ const http = require("http");
 const configuredb = require("./Database/db");
 var morgan = require("morgan");
 var path = require("path");
-// const redis = require("redis");
 const { promisify } = require("util");
 const userCtlr = require("./controller/userController");
 const socketIo = require("socket.io");
 const taskController = require("./controller/taskController");
+const cachemanager = require("cache-manager")
+const { caching } =  require('cache-manager')
+const NodeCache = require( "node-cache" );
 const { handleMessage } = require("./message/message");
 const { createMessage, updateMessage, deleteMessage } = require("./middleware/message");
 const { validateUserRegistration, validateTaskCreation, validateLogin, deleteTask } = require("./validator/validator");
 
 const app = express();
-// const client = redis.createClient();
+const myCache = new NodeCache({ stdTTL: 100000, checkperiod: 120 });
 
-// const getAsync = promisify(client.get).bind(client);
-// const setAsync = promisify(client.set).bind(client);
 
 const server = app.listen(process.env.port, (req,res) => console.log(`Listening on port ${process.env.port}`))
 const io = socketIo(server,{ cors: {
@@ -51,6 +51,11 @@ configuredb();
 
 app.post("/api/register",validateUserRegistration, userCtlr.register);
 app.post("/api/login",validateLogin,userCtlr.login)
+app.post("/api/getuserdetails",userCtlr.getUserDetails)
+
+//Tasks
+app.get("/api/getall",taskController.getall)
+app.get("/api/tasks",taskController.getTasks)
 app.post("/api/createtask",createMessage(clients),validateTaskCreation, taskController.create);
 app.put("/api/updatetask", updateMessage(clients),taskController.update);
 app.delete("/api/deletetask",deleteMessage(clients),deleteTask,taskController.delete)
