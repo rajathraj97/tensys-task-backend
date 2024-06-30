@@ -12,6 +12,7 @@ const socketIo = require("socket.io");
 const taskController = require("./controller/taskController");
 const { handleMessage } = require("./message/message");
 const { createMessage, updateMessage, deleteMessage } = require("./middleware/message");
+const { validateUserRegistration, validateTaskCreation, validateLogin, deleteTask } = require("./validator/validator");
 
 const app = express();
 // const client = redis.createClient();
@@ -48,11 +49,11 @@ app.use(cors());
 
 configuredb();
 
-app.post("/api/register", userCtlr.register);
-app.post("/api/login",userCtlr.login)
-app.post("/api/createtask",createMessage(clients), taskController.create);
+app.post("/api/register",validateUserRegistration, userCtlr.register);
+app.post("/api/login",validateLogin,userCtlr.login)
+app.post("/api/createtask",createMessage(clients),validateTaskCreation, taskController.create);
 app.put("/api/updatetask", updateMessage(clients),taskController.update);
-app.delete("/api/deletetask",deleteMessage(clients),taskController.delete)
+app.delete("/api/deletetask",deleteMessage(clients),deleteTask,taskController.delete)
 
 app.get("/api", (req, res) => {
   const message = "Hello from server";
