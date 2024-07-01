@@ -18,7 +18,7 @@ const updateMessage = (clients) => {
 
 const deleteMessage = (clients) => {
     return (req, res, next) => {
-      let message = `Task Title ${req.body.taskname} was deleted`;
+      let message = `Task was deleted`;
       handleMessage(clients, message);
       next();
     };

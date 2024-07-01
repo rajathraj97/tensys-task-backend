@@ -18,7 +18,3 @@ exports.validateLogin = [
     body('email').notEmpty().withMessage('email is required'),
     body('password').notEmpty().withMessage('password is required')
 ]
-
-exports.deleteTask = [
-    body('_id').notEmpty().withMessage('Task id required')
-]
