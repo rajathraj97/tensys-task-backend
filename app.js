@@ -20,7 +20,7 @@ const app = express();
 const myCache = new NodeCache({ stdTTL: 100000, checkperiod: 120 });
 
 
-const server = app.listen(process.env.port, (req,res) => console.log(`Listening on port ${process.env.port}`))
+const server = app.listen(3000, (req,res) => console.log(`Listening on port ${3000}`))
 const io = socketIo(server,{ cors: {
     origin: "*",
     methods: ["GET", "POST"]
@@ -52,13 +52,14 @@ configuredb();
 app.post("/api/register",validateUserRegistration, userCtlr.register);
 app.post("/api/login",validateLogin,userCtlr.login)
 app.post("/api/getuserdetails",userCtlr.getUserDetails)
+app.get("/api/getall",userCtlr.getAllUsers)
 
 //Tasks
 app.get("/api/getall",taskController.getall)
 app.get("/api/tasks",taskController.getTasks)
 app.post("/api/createtask",createMessage(clients),validateTaskCreation, taskController.create);
 app.put("/api/updatetask", updateMessage(clients),taskController.update);
-app.delete("/api/deletetask",deleteMessage(clients),deleteTask,taskController.delete)
+app.delete("/api/deletetask",deleteMessage(clients),taskController.delete)
 
 app.get("/api", (req, res) => {
   const message = "Hello from server";

@@ -25,7 +25,6 @@ userCtlr.register = async (req, res) => {
       "email",
       "password",
       "address",
-      "role",
       "number",
       "pincode",
     ]);
@@ -36,7 +35,7 @@ userCtlr.register = async (req, res) => {
     console.log(hashPassword);
     user.password = hashPassword;
     const userDoc = await user.save();
-    res.json(userDoc);
+    res.status(200).json(userDoc);
   } catch (e) {
     res.status(404).json(e);
   }
@@ -134,4 +133,13 @@ userCtlr.getUserDetails = async (req, res) => {
     res.status(400).json({ msg: e.message });
   }
 };
+
+userCtlr.getAllUsers = async(Req,res) =>{
+  try{
+    const data =await User.find()
+    res.json(data)
+  }catch(e){
+    res.status(400).json({msg:e})
+  }
+}
 module.exports = userCtlr;

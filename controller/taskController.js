@@ -48,12 +48,10 @@ taskController.update = async (req, res) => {
 
 taskController.delete = async (req, res) => {
   try {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    const body = pick(req.body,["_id"])
+    const body = pick(req.query,["_id"])
+    console.log(body)
     const data = await Task.deleteOne({_id:body._id})
+    console.log(data)
     res.status(200).json({msg:"deleted sucessfully"})
   } catch (e) {
     res.status(400).json({ msg: e });
