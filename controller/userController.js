@@ -103,10 +103,9 @@ userCtlr.changeRole = async (req, res) => {
 
 userCtlr.getUserDetails = async (req, res) => {
   try {
-    const myCache = new NodeCache( { stdTTL: 100000, checkperiod: 1200 } );
+    const myCache = new NodeCache( { stdTTL: 1000, checkperiod: 1200 } );
     const body = pick(req.body, ["userId"]);
     console.log(body);
-    console.log(client);
     const userId = new mongoose.Types.ObjectId(body.userId);
     const cachedData = cache.get(userId.toString());
     console.log(cachedData)
@@ -125,7 +124,7 @@ userCtlr.getUserDetails = async (req, res) => {
       },
     ]);
     // console.log(data);
-    cache.set(userId.toString(), data,10000);
+    cache.set(userId.toString(), data,1000);
     // const check = myCache.has(userId.toString())
     // console.log(check)
     res.status(200).json(data);
