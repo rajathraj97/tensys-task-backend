@@ -106,7 +106,6 @@ userCtlr.getUserDetails = async (req, res) => {
     const myCache = new NodeCache( { stdTTL: 100000, checkperiod: 1200 } );
     const body = pick(req.body, ["userId"]);
     console.log(body);
-    console.log(client);
     const userId = new mongoose.Types.ObjectId(body.userId);
     const cachedData = cache.get(userId.toString());
     console.log(cachedData)
